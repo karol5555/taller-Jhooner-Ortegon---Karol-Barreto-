@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <style>
+    body {
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      max-width: 900px;
+      background-color: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      display: flex; /* Agregado para dividir en dos columnas */
+    }
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .form-column {
+      width: 50%; /* Dividir en dos columnas, 50% para el formulario */
+      padding: 20px; /* Espacio entre las columnas */
+    }
+    .resultado-column {
+      width: 50%; /* 50% para los resultados */
+      padding: 20px; /* Espacio entre las columnas */
+    }
+    label {
+      display: block;
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .resultado {
+      text-align: center;
+    }
+    .user-image {
+      max-width: 200px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>{{ title }}</h1>
+    <div class="form-column">
+      <form (ngSubmit)="calcularIMC()">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" [(ngModel)]="persona.nombre">
+        <label for="edad">Edad:</label>
+        <input type="number" id="edad" name="edad" [(ngModel)]="persona.edad">
+        <label for="sexo">Sexo:</label>
+        <select id="sexo" name="sexo" [(ngModel)]="persona.sexo">
+          <option value="Masculino">Masculino</option>
+          <option value="Femenino">Femenino</option>
+        </select>
+        <label for="estatura">Altura (m):</label>
+        <input type="number" step="0.01" id="estatura" name="estatura" [(ngModel)]="persona.estatura">
+        <label for="peso">Peso (kg):</label>
+        <input type="number" step="0.1" id="peso" name="peso" [(ngModel)]="persona.peso">
+        <label for="imagen">Imagen:</label>
+        <input type="file" accept="image/*" id="imagen" name="imagen" (change)="manejarImagenSeleccionada($event)">
+        <button class="btn btn-primary" (click)="calcularIMC()" type="submit">Calcular IMC</button>
+      </form>
+    </div>
+    <div class="resultado-column">
+      <div class="resultado mt-4" *ngIf="persona.imc">
+        <h3>Información del usuario:</h3>
+        <ul>
+          <li>Nombre: {{ persona.nombre }}</li>
+          <li>Edad: {{ persona.edad }} Años</li>
+          <li>Sexo: {{ persona.sexo }}</li>
+          <li>IMC: {{ persona.imc }}</li>
+          <img [src]="imagen" alt="Imagen del usuario" class="user-image">
+        </ul>
+        <h3>Estudio Rápido De IMC:</h3>
+        <p>{{ imcCategoria(persona.imc) }}</p>
+      </div>
+  </div>
